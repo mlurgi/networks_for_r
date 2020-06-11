@@ -1,0 +1,35 @@
+---
+title: "Ecological Networks: Species and Interactions"
+output:
+  html_document:
+    toc_float: false
+    includes:
+      before_body: [include_header.html, include_lessons_nav.html]
+      after_body: [include_lessons_nav_end.html, include_footer.html]
+---
+
+## Species and interactions as vertices and links
+
+In abstract representations of ecological communities as networks, nodes represent species and links amongst them denote ecological interactions happening between the represented species. 
+
+Adjacency matrices (as we saw in the previous section) are matrix representations of networks where elements of the matrix denote the presence of a link (i.e. interaction) between the species represented by the row and the species represented by the column. Thus, to represent a food web composed of S species as a matrix we need a SxS matrix in order to be able to represent all possible interaction between the S species. The number of species in the network can be calcuated thus as the number of rows or the number of columns.
+
+Using the Benguela food web adjacency matrix `benguela.AM` that you created in the previous section, you can calculate the number of species.
+
+In an adjacency matrix, all species are represented by columns and rows. Counting the number of columns or rows in the adjacency matrix will let you obtain the number of species in the food web. In R, you can use the `dim` function to look at the matrix **dimensions**.
+
+```{r, eval=FALSE}
+# species richness
+S <- dim(benguela.AM)[1]
+```
+
+Similarly, since interactions are represented as ones in the matrix, if you `sum` all the values in the matrix, you will get the number of interactions.
+
+```{r, eval=FALSE}
+# number of links
+L <- sum(benguela.AM)
+```
+
+
+***
+## [Continue to Inline Code](lesson-4.html){.continue-link}
