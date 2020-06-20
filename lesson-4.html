@@ -11,7 +11,7 @@
 
 
 
-<title>R Markdown</title>
+<title>Networks as graphs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -212,80 +212,97 @@ $(".main-container").removeClass("main-container").removeClass("container-fluid"
 
 <div id="pageContent" class="standardPadding">
   <div class="articleBandContent">
-
-<style type="text/css">
-.title {
-  display: none;
-}
-#disqus_thread {
-  display: none;
-}
-</style>
+<div class="lessonPage">
+  <div class="lessonsNav">
+    <a id="nav-lesson-1" href="lesson-1.html">Introduction</a>
+    <a id="nav-lesson-2" href="lesson-2.html">Representing Networks</a>
+    <a id="nav-lesson-3" href="lesson-3.html">Ecological Networks: Species and Interactions</a>
+    <a id="nav-lesson-4" href="lesson-4.html">Networks as Graphs</a>
+   
+  </div>
+  <div class="lessonContent">
 
 <div class="fluid-row" id="header">
 
 
 
-<h1 class="title toc-ignore">R Markdown</h1>
+<h1 class="title toc-ignore">Networks as graphs</h1>
 
 </div>
+
+
+<p>As we have seen, edge lists and adjacency matrices are convenient ways in which interaction networks can be represented. However, more flexible formats for representing networks are needed when we want to perform more complex actions on networks, or even just for visualisation purposes.</p>
+<p>The field of mathematics has been studying networks for decades. The mathematics subfield of <a href="https://en.wikipedia.org/wiki/Graph_theory">Graph Theory</a> has developed extensive frameworks to analyse and manipulate mathematical objects known as <code>graphs</code>. Graphs, as networks, are simply collections of nodes and links between them. So, we can represent networks as graphs and take advantage of the mathematical framework of Graph Theory to study them.</p>
+<p>Several computer programming libraries have been especially developed to construct and manipulate graphs. These libraries make it easy and widely accessible to work with and study networks. Amongst the most popular the <a href="https://networkx.github.io/">NetworkX</a> complex networks library for <a href="https://www.python.org/">Python</a> and the <a href="https://igraph.org/">igraph</a> package for network analysis, which can be used on several platforms, including <a href="https://www.r-project.org/">R</a>. For the rest of this course we will be using <code>igraph</code> to create and manipulate ecological networks.</p>
+<p>To install and load igraph on your R workspace runt the following code:</p>
+<pre class="r"><code>## Install igraph
+install.packages(&quot;igraph&quot;)
+
+## Load igraph into workspace
+library(igraph)</code></pre>
+<p>To start getting familiar with igraph we will start by creating some simple networks.</p>
+<div id="weaving-networks-from-scratch" class="section level2">
+<h2>Weaving networks from scratch</h2>
+<p>The following instructions will walk you through a simple example in which you will create a small network:</p>
+<p>1 First create a vector called <code>species</code> with the numbers from 1 to 10 2 Then create a network by adding the <code>species</code> as <code>vertices</code> to an empty graph. 3 Create an interaction between species 5 and 7 4 Create 10 other interactions between any species you want</p>
+<pre class="r"><code>library(igraph)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;igraph&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     decompose, spectrum</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     union</code></pre>
+<pre class="r"><code># Ten species
+species &lt;- 1:10
+network &lt;- graph.empty() + vertices(species)
+
+# Link between species 5 and 7
+network[5,7] &lt;- 1</code></pre>
+<p>The igraph library also lets you draw your networks in a very straigthforward way, simply using the plot function.</p>
+<pre class="r"><code># Plotting your network
+plot(network)</code></pre>
+<p>If the instructions above worked well you will be able to see something like this:</p>
+<p><img src="lesson-images/first-network.png" /></p>
+</div>
+<div id="graph-connectivity-food-web-connectance" class="section level2">
+<h2>Graph connectivity / Food web connectance</h2>
+<p>Now that we have an igraph representation of our network, we can calculate several of its properties. If we think of the network we just constructed as a food web, we can calculate the number of species and links (what we did previously on adjacency matrices) thus:</p>
+<pre class="r"><code># number of species
+S &lt;- vcount(network)
+
+# number of interactions
+L &lt;- ecount(network)</code></pre>
+<p>The functions <code>vcount</code> and <code>ecount</code> from the igraph library let you count the number of nodes and links on a graph, respectively.</p>
+<p>Having counted the number of species and links in our newly built food web, we can start calculating more interesting prorperties such as connectivity. In food webs connectivity can be quantified as the average number of interactions per species (L/S, i.e. the mean number of interactions species in the network have), and <code>Connectance</code> (L/S<sup>2</sup>, i.e. the fraction of links present in the network out of all possible links).</p>
+<pre class="r"><code># average number of interactions species
+L.S &lt;- L/S
+
+# food web connectance
+C &lt;- L/S^2</code></pre>
+<hr />
+</div>
+<div id="continue-to-code-languages" class="section level2">
+<h2><a href="lesson-5.html" class="continue-link">Continue to Code Languages</a></h2>
+</div>
+
+  </div> <!-- lessonContent -->
+</div> <!-- lessonPage -->
 
 
 <script type="text/javascript">
-$("#rStudioHeader").removeClass("alwaysShrunk");
-$("#pageContent").removeClass("standardPadding");
+  var lesson = window.location.href.match(/lesson-[0-9]+/g);
+  if (lesson !== null) {
+    lesson = 'nav-' + lesson[0];
+    $('#'+lesson).addClass('current');
+  }
+
+  $('#show-answer').on("click", function() {
+    $('#show-answer').addClass('showing');
+    $('#model-answer').addClass('showing');
+  })
 </script>
-
-
-<div id="homeContent">
-  <div class="band full blue first rightText">
-    <div class="bandContent vCenter">
-      <div class="blurb">
-        <div class="tagline">Analyze. Share. Reproduce.</div>
-        <div>Your data tells a story. Tell it with R Markdown. Turn your analyses into high quality documents, reports, presentations and dashboards.</div>
-      </div>
-    </div>
-    <img class="imageOne" src="images/bandOne.png"/>
-  </div>
-
-  <div class="band full gray1 second leftText">
-    <div class="bandContent vCenter">
-      <div class="blurb">
-        <div>R Markdown documents are fully reproducible. Use a productive <a href="https://bookdown.org/yihui/rmarkdown/notebook.html">notebook interface</a> to weave together narrative text and code to produce elegantly formatted output. Use <a href="https://bookdown.org/yihui/rmarkdown/language-engines.html">multiple languages</a> including R, Python, and SQL.</div>
-      </div>
-    </div>
-    <img class="imageTwo" src="images/bandTwo2.png"/>
-  </div>
-
-  <div class="band full third rightText">
-    <img class="imageThree" src="images/bandThree2.png"/>
-    <div class="bandContent vCenter">
-      <div class="blurb">
-        <div>
-          R Markdown supports dozens of static and dynamic output formats including
-          <a href="https://bookdown.org/yihui/rmarkdown/html-document.html">HTML</a>, <a href="https://bookdown.org/yihui/rmarkdown/pdf-document.html">PDF</a>, <a href="https://bookdown.org/yihui/rmarkdown/word-document.html">MS Word</a>, <a href="https://bookdown.org/yihui/rmarkdown/beamer-presentation.html">Beamer</a>, <a href="https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html">HTML5 slides</a>, <a href="https://bookdown.org/yihui/rmarkdown/tufte-handouts.html">Tufte-style handouts</a>, <a href="https://bookdown.org">books</a>, <a href="flexdashboard/">dashboards</a>,
-          <a href="https://bookdown.org/yihui/rmarkdown/shiny-documents.html">shiny applications</a>, <a href="https://github.com/rstudio/rticles">scientific articles</a>, <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">websites</a>, and more.
-        </div>
-        <div class="actions">
-          <div><a href="lesson-1.html"><button class="bigButton getStarted">Get Started</button></a></div>
-          <div><a href="gallery.html"><button class="bigButton gallery">See Gallery</button></a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="band full gray2 fourth leftText">
-    <div class="bandContent vCenter">
-      <div class="blurb">
-        <div>Need R Markdown in production? Learn how to <a href="https://docs.rstudio.com/connect/user/publishing.html#publishing-documents">publish</a> and <a href="https://docs.rstudio.com/connect/user/r-markdown-schedule.html">schedule</a> reports, <a href="https://docs.rstudio.com/connect/user/param-rmarkdown.html">enable self-service customization</a>, and distribute beautiful emails using <a href='https://rstudio.com/products/connect'> RStudio Connect</a>.
-        </div>
-      </div>
-    </div>
-    <img class="imageFour" src="images/band4.png"/>
-  </div>
-</div>
-
-
-
   </div> <!-- articleBandContent -->
 </div> <!-- pageContent -->
 
