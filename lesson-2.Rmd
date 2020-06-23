@@ -51,7 +51,7 @@ The code below will enable you to download the edgelist file and use it to creat
 
 ```{r}
 library(RCurl)
-x <- getURL("https://raw.githubusercontent.com/seblun/networks_datacamp/master/datasets/benguela.tro")
+x <- getURL("https://raw.githubusercontent.com/mlurgi/networks_for_r/master/datasets/benguela.edgelist")
 benguela.EL <- read.table(text = x) 
 benguela.EL <- as.matrix(benguela.EL)
 ```

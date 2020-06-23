@@ -184,7 +184,7 @@ summary {
 <div id="rStudioHeader" class="alwaysShrunk">
   <div class="innards bandContent">
     <div>
-      <a class="productName" href="lesson-1.html">Ecological Networks in R</a>
+      <a class="productName" href="index.html">Ecological Networks in R</a>
       <div class="Networks">    </div>
     </div>
 
@@ -218,6 +218,7 @@ $(".main-container").removeClass("main-container").removeClass("container-fluid"
     <a id="nav-lesson-2" href="lesson-2.html">Representing Networks</a>
     <a id="nav-lesson-3" href="lesson-3.html">Ecological Networks: Species and Interactions</a>
     <a id="nav-lesson-4" href="lesson-4.html">Networks as Graphs</a>
+    <a id="nav-lesson-5" href="lesson-5.html">Food Web Properties</a>
    
   </div>
   <div class="lessonContent">
@@ -244,8 +245,12 @@ library(igraph)</code></pre>
 <div id="weaving-networks-from-scratch" class="section level2">
 <h2>Weaving networks from scratch</h2>
 <p>The following instructions will walk you through a simple example in which you will create a small network:</p>
-<p>1 First create a vector called <code>species</code> with the numbers from 1 to 10 2 Then create a network by adding the <code>species</code> as <code>vertices</code> to an empty graph. 3 Create an interaction between species 5 and 7 4 Create 10 other interactions between any species you want</p>
-<pre class="r"><code>library(igraph)</code></pre>
+<p>1.- First create a vector called <code>species</code> with the numbers from 1 to 10</p>
+<p>2.- Then create a network by adding the <code>species</code> as <code>vertices</code> to an empty graph</p>
+<p>3.- Create an interaction between species 5 and 7</p>
+<p>4.- Create 10 other interactions between any species you want</p>
+<pre class="r"><code>require(igraph)</code></pre>
+<pre><code>## Loading required package: igraph</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;igraph&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -260,15 +265,44 @@ network &lt;- graph.empty() + vertices(species)
 
 # Link between species 5 and 7
 network[5,7] &lt;- 1</code></pre>
-<p>The igraph library also lets you draw your networks in a very straigthforward way, simply using the plot function.</p>
+</div>
+<div id="converting-matrix-to-igraph-object" class="section level2">
+<h2>Converting matrix to igraph object</h2>
+<p>If we have an adjacency matrix and we want an igraph object representing the same network, without the need to create the network from scratch, igraph offers the functionality of creating graphs from adjancecy matrices. Just use the function <code>graph.adjacency(A)</code>, where A is your adjacency matrix.</p>
+<p>Check out the documentation for <a href="http://igraph.org/r/doc/graph_from_adjacency_matrix.html">graph.adjacency</a>, including additional parameters that you can use to create your network. Similarly, to create a graph from an edgelist, you can use the <code>graph_from_edgelist</code>function from igraph.</p>
+<p>We can convert the network for the Benguela ecosystem, into and igraph object using the following code.</p>
+<pre class="r"><code>library(RCurl)
+x &lt;- getURL(&quot;https://raw.githubusercontent.com/seblun/networks_datacamp/master/datasets/benguela.tro&quot;)
+benguela.EL &lt;- read.table(text = x) 
+benguela.EL &lt;- as.matrix(benguela.EL)
+
+# Create an adjacency matrix called benguela.AM, containing only zeros
+benguela.AM &lt;- matrix(0, max(benguela.EL), max(benguela.EL))
+
+# Introduce ones to the matrix to represent interactions between species
+benguela.AM[benguela.EL] &lt;- 1
+
+# Convert Benguela adjacency matrix to an igraph network
+benguela.network &lt;- graph.adjacency(benguela.AM)</code></pre>
+</div>
+<div id="drawing-networks" class="section level2">
+<h2>Drawing networks</h2>
+<p>The network representations we have explored so far are great for manipulating them and calculating properties over them. However, to gain an intuitive idea of what the networks we are analysing look like, or if we want to show them in publications or websites, it is sometimes desirable to draw them as graphs: with dots representing nodes/species and lines connecting them representing links/interactions. In pretty much the same way we saw in the introductory video.</p>
+<p>Of course, drawing a network on a whiteboard using coloured pens is easy. Doing that on a computer or writing code in R to do it, might be more of a challenge. Fortunately, libraries such as igraph offer these functionalities. The <a href="http://igraph.org/r/doc/plot.igraph.html">plot</a> function from the igraph library takes as an input an igraph object and produces a graphical representation of the network.</p>
+<p>Let’s try it!</p>
 <pre class="r"><code># Plotting your network
 plot(network)</code></pre>
 <p>If the instructions above worked well you will be able to see something like this:</p>
 <p><img src="lesson-images/first-network.png" /></p>
+<p>What about the Benguela ecosystem network…</p>
+<pre class="r"><code># Plot the Benguela food web
+plot(benguela.network, edge.arrow.size = 0.2)</code></pre>
+<p><img src="lesson-4_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This representation of the Benguela web looks a bit messy. Don’t worry! We will explore ways of making networks more beautiful later on.</p>
 </div>
 <div id="graph-connectivity-food-web-connectance" class="section level2">
 <h2>Graph connectivity / Food web connectance</h2>
-<p>Now that we have an igraph representation of our network, we can calculate several of its properties. If we think of the network we just constructed as a food web, we can calculate the number of species and links (what we did previously on adjacency matrices) thus:</p>
+<p>Now that we have an igraph representation of our network(s), we can calculate several of its properties. If we think of the network we just constructed as a food web, we can calculate the number of species and links (what we did previously on adjacency matrices) thus:</p>
 <pre class="r"><code># number of species
 S &lt;- vcount(network)
 
@@ -281,10 +315,43 @@ L.S &lt;- L/S
 
 # food web connectance
 C &lt;- L/S^2</code></pre>
+<p>In the case of the adjacency matrix (A) representation of a food web, we know that it contains all the links in our network represented by 1’s. Hence, the number of links in our network is simply sum(A). Similarly we have also learnt that the number of species (at least for a food web) equals the number of rows (or columns) in the matrix: nrow(A).</p>
+<p>Hence, the connectance of our food web represented by matrix A is calculated as: sum(A)/(nrow(A)<sup>2</sup>). Try this on your network above and you should obtain the same quantity we now have in <code>C</code>. <strong>HINT:</strong> To obtain the adjacency matrix representation of an igraph object you can use the <code>as_adjacency_matrix</code> function.</p>
+<p>For the Benguela network we can calculate connectivity properties:</p>
+<pre class="r"><code># Calculate connectance
+connectance &lt;- ecount(benguela.network) / vcount(benguela.network)^2 
+
+# Print connectance va
+print(paste0(&#39;Connectance of Benguela network =&#39;, round(connectance,2)))</code></pre>
+<pre><code>## [1] &quot;Connectance of Benguela network =0.24&quot;</code></pre>
+<pre class="r"><code># Calculate number of links per species
+links.per.species &lt;- ecount(benguela.network) / vcount(benguela.network)</code></pre>
+</div>
+<div id="calculate-connectance-for-bipartite-networks" class="section level2">
+<h2>Calculate connectance for bipartite networks</h2>
+<p>We have learnt how to calculate the connectance of ecological networks in general: it is simply the fraction of realised links out of the possible ones. Additionally, we have explored methods to quantify connectance in food webs based on the information extracted either from the adjacency matrix or the igraph representation of our networks.</p>
+<p>We have also learnt that the way in which bipartite networks are represented in incidence matrices is fundamentally different from the way in which we represent food webs in adjacency matrices. Keeping that in mind, we need to find out ways of finding out what would be: 1.- the correct way of finding out the number of species in a bipartite network from our matrix representation; and 2.- the total possible number of links in a bipartite network (remember that links between species in the same group are ‘forbidden’).</p>
+<p>Using the fish-anemone interaction network that we used previously, we can calculate the total number of possible links as the product of the number of species on one side (i.e. fish) times the number of species on the other side (i.e. anemone). This will give us the total number of links if every fish species would be found to interact with each anemone species. Connectance of this network is then simply the total number of links divided by this quantity.</p>
+<pre class="r"><code>library(RCurl)
+y &lt;- getURL(&quot;https://raw.githubusercontent.com/seblun/networks_datacamp/master/datasets/anemonefish.txt&quot;)
+anemonef &lt;- read.table(text = y)
+names(anemonef) &lt;- paste(&quot;A&quot;, 1:10, sep = &quot;&quot;)
+row.names(anemonef) &lt;- paste(&quot;F&quot;, 1:26, sep = &quot;&quot;)       
+anemonef &lt;- as.matrix(anemonef)
+
+# Calculate conectance of anemoref
+bipartite.connectance &lt;- sum(anemonef) / (dim(anemonef)[1] * dim(anemonef)[2])</code></pre>
+<p>Igraph lets us manipulate bipartite networks in a similar way to unipartite ones. We can load the incidence matrix above using the following instruction:</p>
+<pre class="r"><code>anemonef.network &lt;- graph_from_incidence_matrix(anemonef, directed = TRUE, mode = &#39;in&#39;)</code></pre>
+<p>And calculate its connectance thus:</p>
+<pre class="r"><code># Calculate conectance of anemoref
+bipartite.connectance &lt;- ecount(anemonef.network) / (sum(V(anemonef.network)$type) * (vcount(anemonef.network) - sum(V(anemonef.network)$type)) )</code></pre>
+<p>As a fun excercise you can try and calculate the average number of links per species in this network!</p>
+<p>Now that we are familiar with the basics of ecological networks and how to create them and manipulate them in R, let’s do some ecological networks analysis!</p>
 <hr />
 </div>
-<div id="continue-to-code-languages" class="section level2">
-<h2><a href="lesson-5.html" class="continue-link">Continue to Code Languages</a></h2>
+<div id="continue-to-food-web-properties" class="section level2">
+<h2><a href="lesson-5.html" class="continue-link">Continue to Food Web Properties</a></h2>
 </div>
 
   </div> <!-- lessonContent -->

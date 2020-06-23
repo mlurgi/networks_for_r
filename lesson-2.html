@@ -184,21 +184,15 @@ summary {
 <div id="rStudioHeader" class="alwaysShrunk">
   <div class="innards bandContent">
     <div>
-      <a class="productName" href="index.html">R Markdown</a>
-      <div class="rStudio"><span class="light">from </span> <a href="https://www.rstudio.com/"><div class="logo"></div></a></div>
+      <a class="productName" href="index.html">Ecological Networks in R</a>
+      <div class="Networks">    </div>
     </div>
 
     <div id="menu">
       <div id="menuToggler"></div>
       <div id="menuItems">
         <a class="menuItem" href="lesson-1.html">Get Started</a>
-        <a class="menuItem" href="gallery.html">Gallery</a>
-        <a class="menuItem" href="formats.html">Formats</a>
-        <a class="menuItem" href="articles.html">Articles</a>
-        <a class="menuItem" href="https://bookdown.org/yihui/rmarkdown/">Book</a>
-        <a class="menuItem" href="docs/">References</a>
-        <a class="menuItem gitHub" href="https://github.com/rstudio/rmarkdown"></a>
-        <a class="menuItem gitHubText" href="https://github.com/rstudio/rmarkdown">Source on GitHub</a>
+        
       </div>
     </div>
   </div>
@@ -223,6 +217,8 @@ $(".main-container").removeClass("main-container").removeClass("container-fluid"
     <a id="nav-lesson-1" href="lesson-1.html">Introduction</a>
     <a id="nav-lesson-2" href="lesson-2.html">Representing Networks</a>
     <a id="nav-lesson-3" href="lesson-3.html">Ecological Networks: Species and Interactions</a>
+    <a id="nav-lesson-4" href="lesson-4.html">Networks as Graphs</a>
+    <a id="nav-lesson-5" href="lesson-5.html">Food Web Properties</a>
    
   </div>
   <div class="lessonContent">
@@ -257,7 +253,7 @@ $(".main-container").removeClass("main-container").removeClass("container-fluid"
 <p>This, and other ecological networks datasets are available from the <a href="https://www.globalwebdb.com/">Global Food Web Database</a>.</p>
 <p>The code below will enable you to download the edgelist file and use it to create an adjacency matrix representation of the network. Two representations of the network then remain available: the Edgelist representation (<code>benguela.EL</code>) and the Adjacency Matrix representation (<code>benguela.AM</code>).</p>
 <pre class="r"><code>library(RCurl)
-x &lt;- getURL(&quot;https://raw.githubusercontent.com/seblun/networks_datacamp/master/datasets/benguela.tro&quot;)
+x &lt;- getURL(&quot;https://raw.githubusercontent.com/mlurgi/networks_for_r/master/datasets/benguela.edgelist&quot;)
 benguela.EL &lt;- read.table(text = x) 
 benguela.EL &lt;- as.matrix(benguela.EL)</code></pre>
 <pre class="r"><code># Create an adjacency matrix called benguela.AM, containing only zeros

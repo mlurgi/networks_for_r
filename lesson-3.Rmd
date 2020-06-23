@@ -40,9 +40,9 @@ Other types of ecological networks, however, like for example, plant-animal mutu
 
 **Figure 1. Example of a plant-animal pollinator bipartite network.** Image taken from MacGregor, CJ et al. (2015) *Pollination by nocturnal Lepidoptera, and the effects of light pollution, a review*. **Ecological Entomology**. 40, 187-198. 
 
-An adjacency matrix for a bipartite network only needs to represent one set of species (e.g. hosts/plants) as rows, and the other set of species (e.g. visitors/mutualists) as columns. Thus, the way of counting species in an adjacency matrix representing a mutualistic (bipartite) network is different from that used to count species in adjacency matrices representing food webs.
+The equivalent of an adjacency matrix for a bipartite network is termed an incidence matrix. In incidence matrices one set of species are represented as rows (e.g. hosts/plants), and the other set of species as columns (e.g. visitors/mutualists). Thus, the way of counting species in an incidence matrix representing a mutualistic (bipartite) network is different from that used to count species in adjacency matrices representing food webs.
 
-For a bipartite ecological network represented by an adjacency matrix with size HxV, where H is the number of hosts and V is the number of visitors, the number of species in the network is equal to H + V.
+For a bipartite ecological network represented by an incidence matrix with size HxV, where H is the number of hosts and V is the number of visitors, the number of species in the network is equal to H + V.
 
 As an example, we load a matrix representing a bipartite network of interactions between anemones and several species of fish living within them in South-East Asia. This network was taken from Ollerton, J. et al. (2007) *Finding NEMO: nestedness engendered by mutualistic organization in anemonefish and their hosts*. **Proceedings of the Royal Society B**. 274, 591-598.  
 
@@ -50,7 +50,7 @@ Try and calculate the total number of anemone *and* fish species in the network.
 
 ```{r}
 library(RCurl)
-y <- getURL("https://raw.githubusercontent.com/seblun/networks_datacamp/master/datasets/anemonefish.txt")
+y <- getURL("https://raw.githubusercontent.com/mlurgi/networks_for_r/master/datasets/anemonefish.txt")
 anemonef <- read.table(text = y)
 names(anemonef) <- paste("A", 1:10, sep = "")
 row.names(anemonef) <- paste("F", 1:26, sep = "")       
