@@ -40,5 +40,10 @@ The links to the left provide quick access to each of the topics we will be disc
 
 I hope you enjoy this tutorial. If you have any questions, comments, suggestions, or simply would like to discuss any of the topics presented here, I would be happy to talk to you. Just email me at: (miguel.lurgi@swansea.ac.uk)
 
+
+### Collaborators
+
+This project wouldn't have been possible without the help and inspiration of Sebastian Block. [Sebastian](https://blockecology.github.io/) is currently finishing his PhD in Princeton with Jonathan Levine.
+
 ***
 ## [Continue to Representing Networks](lesson-2.html){.continue-link}

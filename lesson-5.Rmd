@@ -53,7 +53,14 @@ Even though these measures are useful to have an idea of the average diet breadt
 ![](lesson-images/wolf.jpg){width=325} ![](lesson-images/panda.jpg){width=350}
 
 
-To assess variability in diet breadth and the degree of vulnerability of species in a food web, metrics such as the standard deviation of normalised generality and vulnerability are useful.
+To assess variability in diet breadth and the degree of vulnerability of species in a food web, metrics such as the standard deviation of normalised generality and vulnerability are useful. These properties can be calculated using the following formulae:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://latex.codecogs.com/svg.latex?\Large&space;G_{i}&space;=&space;\frac{1}{L/S}\sum_{j=1}^{S}a_{ji}" title="Generality" />    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <img src="https://latex.codecogs.com/svg.latex?\Large&space;V_{i}&space;=&space;\frac{1}{L/S}\sum_{j=1}^{S}a_{ij}" title="Vulnerability" />
+
+where a<sub>ij</sub> are the i,j values of the adjacency matrix `A` representing the food web.
+
+Using R code they can be calculated thus:
+
 
 ```{r}
 ## Standard deviation of generality:
@@ -152,6 +159,7 @@ Calculating mean food chain length using cheddar:
 
 ```{r}
 MeanFoodChainLength <- function(M){
+  require(cheddar)
   M <- t(M)
   node <- 1:dim(M)[1];
   for(n in 1:length(node)){
@@ -174,6 +182,8 @@ MeanFoodChainLength <- function(M){
 }
 
 ```
+
+## Degree Distributions
 
 
 

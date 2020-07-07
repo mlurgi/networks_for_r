@@ -258,7 +258,10 @@ OutDegree &lt;- function(M){
 }</code></pre>
 <p>Even though these measures are useful to have an idea of the average diet breadth and number of consumers across species in our networks, in many occasions it is desirable to look at the deviation of these properties, since we can have within the same network generalist species such as this guy on the left… … alongside very specialist species, such as this guy on the right…</p>
 <p><img src="lesson-images/wolf.jpg" width="325" /> <img src="lesson-images/panda.jpg" width="350" /></p>
-<p>To assess variability in diet breadth and the degree of vulnerability of species in a food web, metrics such as the standard deviation of normalised generality and vulnerability are useful.</p>
+<p>To assess variability in diet breadth and the degree of vulnerability of species in a food web, metrics such as the standard deviation of normalised generality and vulnerability are useful. These properties can be calculated using the following formulae:</p>
+<p>      <img src="https://latex.codecogs.com/svg.latex?\Large&space;G_{i}&space;=&space;\frac{1}{L/S}\sum_{j=1}^{S}a_{ji}" title="Generality" />            <img src="https://latex.codecogs.com/svg.latex?\Large&space;V_{i}&space;=&space;\frac{1}{L/S}\sum_{j=1}^{S}a_{ij}" title="Vulnerability" /></p>
+<p>where a<sub>ij</sub> are the i,j values of the adjacency matrix <code>A</code> representing the food web.</p>
+<p>Using R code they can be calculated thus:</p>
 <pre class="r"><code>## Standard deviation of generality:
 SDGenerality &lt;- function(M){
   return(sd(colSums(M) / (sum(M)/dim(M)[1]) ));
@@ -328,6 +331,7 @@ T &lt;- FractionOfTop(benguela.AM)</code></pre>
 <p>In food webs, the paths we are interested in are special because they all start in basal resources and they all stop at top predators. So, the way in which we should count those paths is a bit different than what functions such as <code>distances</code> do. Fortunately, there exist libraries for food web analysis that can help us calculate metrics and statistics particularly tailored for food webs. One such a package is <a href="http://quicklizard99.github.io/cheddar/">cheddar</a>. Cheddar let’s you calculate all of the food web properties we have seen so far and many more. We will take advantage of cheddar to calculate mean food chain length. This will also get you familiar with cheddar and you can explore many more functionalities offered by the package.</p>
 <p>Calculating mean food chain length using cheddar:</p>
 <pre class="r"><code>MeanFoodChainLength &lt;- function(M){
+  require(cheddar)
   M &lt;- t(M)
   node &lt;- 1:dim(M)[1];
   for(n in 1:length(node)){
@@ -348,6 +352,9 @@ T &lt;- FractionOfTop(benguela.AM)</code></pre>
   
   return(sum(ch_lens)/length(ch_lens));
 }</code></pre>
+</div>
+<div id="degree-distributions" class="section level2">
+<h2>Degree Distributions</h2>
 <hr />
 </div>
 <div id="continue-to-parameters" class="section level2">

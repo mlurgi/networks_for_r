@@ -144,7 +144,7 @@ print(paste0('Connectance of Benguela network =', round(connectance,2)))
 links.per.species <- ecount(benguela.network) / vcount(benguela.network)
 ```
 
-## Calculate connectance for bipartite networks
+## Connectance in bipartite networks
 
 We have learnt how to calculate the connectance of ecological networks in general: it is simply the fraction of realised links out of the possible ones. Additionally, we have explored methods to quantify connectance in food webs based on the information extracted either from the adjacency matrix or the igraph representation of our networks.
 
